@@ -32,11 +32,13 @@ setup(
         ],
     },
     description="Track child processes.",
+    include_package_data=True,
     long_description=long_description,
     long_description_content_type="text/markdown",
     package_data={
-        '': ['pyproject.toml'],
+        '': ['pyproject.toml', '*.pxd'],
     },
-    packages=find_packages(),
+    package_dir={'': 'src'},
+    packages=find_packages("src"),
     url="https://github.com/chrahunt/track-new",
 )
