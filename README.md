@@ -9,10 +9,12 @@ import process_tracker; process_tracker.install()
 
 import os
 
-os.fork()
-os.fork()
-os.fork()
-print(process_tracker.children())
+pid1 = os.fork()
+pid2 = os.fork()
+pid3 = os.fork()
+
+if pid1 and pid2 and pid3:
+    print(process_tracker.children())
 ```
 
 Prints a list of tuples with `(pid, create_time)` for each process.
@@ -45,4 +47,27 @@ for p in processes:
 # Limitations
 
 1. Only tracks children spawned from dynamically-linked executables.
-2. Relies on `LD_PRELOAD` so will not work for setuid/setgid executables.
+1. Relies on `LD_PRELOAD` so will not work for setuid/setgid executables.
+
+# Development
+
+## Basic
+
+1. `python -m venv .venv`
+1. `.venv/bin/python -m pip install tox`
+1. Make changes
+1. `.venv/bin/python -m tox`
+
+## Debugging C build
+
+Avoids overhead of making sdist
+
+1. As above
+1. `make c-build`
+
+## Debugging issues from sub-process
+
+gdb debugging of sub-processes.
+
+1. As above
+1. `make debug`

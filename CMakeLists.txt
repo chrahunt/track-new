@@ -1,6 +1,6 @@
 cmake_minimum_required(VERSION 3.11.0)
 
-project(track_new LANGUAGES C)
+project(process_tracker LANGUAGES C)
 
 find_package(PythonLibs REQUIRED)
 find_package(PythonInterp REQUIRED)

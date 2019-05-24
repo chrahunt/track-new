@@ -9,7 +9,7 @@ from importlib.resources import path
 from pathlib import Path
 from typing import ContextManager, List, Tuple
 
-from ._lib import _track_new
+from ._lib import _process_tracker
 
 
 __all__ = ['install', 'children']
@@ -48,9 +48,7 @@ def temporary_directory(*args, **kwargs):
             return d
 
         def __exit__(self, exc_type, exc_info, tb):
-            # DEBUGGING
-            #shutil.rmtree(d)
-            ...
+            shutil.rmtree(d)
 
     return TemporaryDirectory()
 
@@ -79,7 +77,7 @@ def install():
 
     logger.debug('LD_PRELOAD path: %s', os.environ['LD_PRELOAD'])
 
-    _track_new.install()
+    _process_tracker.install()
 
 
 def children() -> List[Tuple[int, float]]:

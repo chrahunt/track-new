@@ -1,5 +1,5 @@
 add_library(utils STATIC utils.c)
-add_library(track_new::utils ALIAS utils)
+add_library(process_tracker::utils ALIAS utils)
 
 target_include_directories(
     utils
@@ -14,42 +14,42 @@ target_link_libraries(
     preload
     PRIVATE
         dl
-        track_new::utils
+        process_tracker::utils
 )
 
 install(
     TARGETS
     preload
-    LIBRARY DESTINATION src/track_new/_lib
+    LIBRARY DESTINATION src/process_tracker/_lib
 )
 
 add_library(plthook STATIC plthook.c)
-add_library(track_new::plthook ALIAS plthook)
+add_library(process_tracker::plthook ALIAS plthook)
 
 target_link_libraries(
     plthook
     PUBLIC
-        track_new::vendor_headers
+        process_tracker::vendor_headers
 )
 
-add_library(_track_new MODULE)
-add_library(track_new::_track_new ALIAS _track_new)
+add_library(_process_tracker MODULE)
+add_library(process_tracker::_process_tracker ALIAS _process_tracker)
 
-python_extension_module(_track_new)
+python_extension_module(_process_tracker)
 
 target_link_libraries(
-    _track_new
+    _process_tracker
     # We don't speecify visibiity because it conflicts with the
     # target_liink_libraries call in python_extension_module.
     #PRIVATE
-        track_new::plthook
-        track_new::utils
+        process_tracker::plthook
+        process_tracker::utils
 )
 
-target_cython_sources(_track_new _track_new.pyx)
+target_cython_sources(_process_tracker _process_tracker.pyx)
 
 install(
     TARGETS
-    _track_new
-    LIBRARY DESTINATION src/track_new/_lib
+    _process_tracker
+    LIBRARY DESTINATION src/process_tracker/_lib
 )

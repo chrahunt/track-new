@@ -6,17 +6,17 @@ import subprocess
 from contextlib import contextmanager
 from pathlib import Path
 
-import track_new
+import process_tracker
 
 
 @contextmanager
 def enabled_tracking():
-    track_new.install()
+    process_tracker.install()
 
     try:
         yield
     finally:
-        for p in Path(track_new._pid_dir).glob('*'):
+        for p in Path(process_tracker._pid_dir).glob('*'):
             p.unlink()
 
 
@@ -44,7 +44,7 @@ def test_descendants_are_tracked():
 
         assert p.exitcode == 0
 
-        tracked_children = track_new.children()
+        tracked_children = process_tracker.children()
 
     tracked_pids = sorted(p[0] for p in tracked_children)
     assert sorted(pids) == tracked_pids
@@ -63,7 +63,7 @@ def test_immediate_child_processes_are_seen():
             p.join()
             assert p.exitcode == 0, 'Process must have exited cleanly.'
             pids.append(p.pid)
-        tracked_procs = track_new.children()
+        tracked_procs = process_tracker.children()
 
     tracked_pids = [p[0] for p in tracked_procs]
     assert sorted(pids) == sorted(tracked_pids), 'Must have tracked all children.'

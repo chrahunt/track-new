@@ -1,7 +1,7 @@
 file python
 b main
 commands
-  !silent
+  silent
   b __libc_fork
   c&
 end

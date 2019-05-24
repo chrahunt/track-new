@@ -150,7 +150,7 @@ def get_libs():
 
 
 def get_lib_pointer(offset, lib):
-    """Get some valid pointer in the library to pass to dladdr.
+    """Get a valid pointer in the library to pass to dladdr.
     """
     # TODO: 32-bit.
     logger.debug('Processing library at %s', hex(offset))
@@ -238,7 +238,9 @@ functions = []
 
 cdef class Func:
     """
-    https://stackoverflow.com/a/51054667/1698058
+    Wrapper around a Python function.
+
+    Based on https://stackoverflow.com/a/51054667/1698058
     """
     cdef object f
     cdef object _wrapper
@@ -264,6 +266,8 @@ cdef class Func:
         self._wrapper = ftype(f)
 
     cdef void * ptr(self):
+        """Return pointer to callback that can be passed to a C function.
+        """
         # Wrapper is already a 'function pointer', we just need the numeric value.
         cdef object ctype_ptr = ctypes.cast(self._wrapper, ctypes.c_void_p)
         return to_void_p(ctype_ptr.value)
@@ -363,3 +367,4 @@ def install():
             ptr = callback.ptr()
 
     logger.debug('Installed hooks')
+    # TODO: install hooks in clone and dlopen

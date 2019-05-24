@@ -8,7 +8,7 @@ with open("README.md", "r") as f:
 
 
 setup(
-    name="track-new",
+    name="process-tracker",
     version="0.1.0",
 
     author="Chris Hunt",
@@ -40,5 +40,5 @@ setup(
     },
     package_dir={'': 'src'},
     packages=find_packages("src"),
-    url="https://github.com/chrahunt/track-new",
+    url="https://github.com/chrahunt/process-tracker",
 )
