@@ -44,7 +44,6 @@ target_link_libraries(
     #PRIVATE
         track_new::plthook
         track_new::utils
-        ffcall::callback_static
 )
 
 target_cython_sources(_track_new _track_new.pyx)

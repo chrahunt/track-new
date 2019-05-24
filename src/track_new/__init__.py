@@ -25,7 +25,6 @@ atexit.register(lambda: _stack.close())
 
 def _replace_stack():
     global _stack
-    logger.debug('Replacing stack')
     _stack = ExitStack()
 
 

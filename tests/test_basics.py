@@ -9,10 +9,6 @@ from pathlib import Path
 import track_new
 
 
-def noop():
-    pass
-
-
 @contextmanager
 def enabled_tracking():
     track_new.install()
@@ -33,33 +29,32 @@ def target(q, level):
     p.join()
 
 
-#def test_descendants_are_tracked():
-#    num_procs = 5
-#    q = multiprocessing.Queue()
-#
-#    with enabled_tracking():
-#        p = multiprocessing.Process(target=target, args=(q, num_procs))
-#        p.start()
-#        pids = []
-#        for i in range(num_procs):
-#            pids.append(q.get())
-#
-#        p.join()
-#
-#        assert p.exitcode == 0
-#
-#        tracked_children = track_new.children()
-#
-#    tracked_pids = sorted(p[0] for p in tracked_children)
-#    assert sorted(pids) == tracked_pids
+def test_descendants_are_tracked():
+    num_procs = 5
+    q = multiprocessing.Queue()
+
+    with enabled_tracking():
+        p = multiprocessing.Process(target=target, args=(q, num_procs - 1))
+        p.start()
+        pids = []
+        for i in range(num_procs):
+            pids.append(q.get())
+
+        p.join()
+
+        assert p.exitcode == 0
+
+        tracked_children = track_new.children()
+
+    tracked_pids = sorted(p[0] for p in tracked_children)
+    assert sorted(pids) == tracked_pids
+
+
+def noop():
+    pass
 
 
 def test_immediate_child_processes_are_seen():
-    pid = os.fork()
-    if not pid:
-        os._exit(0)
-    #os.waitpid(pid)
-
     with enabled_tracking():
         pids = []
         for i in range(5):
@@ -71,7 +66,7 @@ def test_immediate_child_processes_are_seen():
         tracked_procs = track_new.children()
 
     tracked_pids = [p[0] for p in tracked_procs]
-    assert pids == tracked_pids, 'Must have tracked all children.'
+    assert sorted(pids) == sorted(tracked_pids), 'Must have tracked all children.'
 
 
 def test_distinct_child_processes_are_seen():

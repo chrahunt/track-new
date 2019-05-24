@@ -6,5 +6,3 @@ target_include_directories(
     INTERFACE
         ${CMAKE_CURRENT_LIST_DIR}
 )
-
-include(${CMAKE_CURRENT_LIST_DIR}/ffcall.cmake)
